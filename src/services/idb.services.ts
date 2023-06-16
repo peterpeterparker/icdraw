@@ -1,19 +1,21 @@
 import { BinaryFiles } from "@excalidraw/excalidraw/types/types";
 import { createStore, entries, getMany, setMany } from "idb-keyval";
-import type { ExcalidrawScene } from "../types/excalidraw.ts";
+import { Scene } from "../types/app.ts";
 
 const stateStore = createStore("icdraw-state", "state");
 const filesStore = createStore("icdraw-files", "files");
 
+const KEY_SCENE = "scene-key";
 const KEY_APP_STATE = "app-state";
 const KEY_ELEMENTS = "elements";
 
-export const setScene = async ({ files, ...rest }: ExcalidrawScene) =>
+export const setScene = async ({ files, ...rest }: Scene) =>
   Promise.all([setState(rest), setFiles(files)]);
 
-const setState = ({ appState, elements }: Omit<ExcalidrawScene, "files">) =>
+const setState = ({ appState, elements, key }: Omit<Scene, "files">) =>
   setMany(
     [
+      [KEY_SCENE, key],
       [KEY_APP_STATE, appState],
       [KEY_ELEMENTS, elements],
     ],
@@ -25,9 +27,9 @@ const setFiles = (files: BinaryFiles | undefined) =>
     ? setMany(Object.entries(files), filesStore)
     : Promise.resolve();
 
-export const getScene = async (): Promise<ExcalidrawScene | undefined> => {
+export const getScene = async (): Promise<Scene | undefined> => {
   const [state, files] = await Promise.all([
-    getMany([KEY_APP_STATE, KEY_ELEMENTS], stateStore),
+    getMany([KEY_SCENE, KEY_APP_STATE, KEY_ELEMENTS], stateStore),
     entries(filesStore),
   ]);
 
@@ -35,9 +37,14 @@ export const getScene = async (): Promise<ExcalidrawScene | undefined> => {
     return undefined;
   }
 
-  const [appState, elements] = state;
+  const [key, appState, elements] = state;
+
+  if (key === undefined) {
+      return undefined;
+  }
 
   return {
+    key,
     appState,
     elements,
     files: files.reduce(

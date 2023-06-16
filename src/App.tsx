@@ -1,25 +1,22 @@
-import { ExcalidrawInitialDataState } from "@excalidraw/excalidraw/types/types";
 import { initJuno } from "@junobuild/core";
+import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";
 import { Auth } from "./components/context/Auth.tsx";
-import { Draw } from "./components/draw/Draw.tsx";
 import { Worker } from "./components/context/Worker.tsx";
+import { Draw } from "./components/draw/Draw.tsx";
 import { getScene } from "./services/idb.services.ts";
+import { Scene } from "./types/app.ts";
 
 const App = () => {
   const [ready, setReady] = useState(false);
 
-  const [scene, setScene] = useState<ExcalidrawInitialDataState | undefined>(
-    undefined
-  );
+  const [scene, setScene] = useState<Scene | undefined>(undefined);
 
   useEffect(() => {
     (async () => {
       const existingScene = await getScene();
-      setScene({
-        ...(existingScene !== undefined && existingScene),
-        scrollToContent: true,
-      });
+      console.log(existingScene)
+      setScene(existingScene !== undefined ? existingScene : { key: nanoid() });
     })();
   }, []);
 
