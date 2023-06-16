@@ -6,10 +6,10 @@ import type {
   ExcalidrawInitialDataState,
 } from "@excalidraw/excalidraw/types/types";
 import { useContext, useRef } from "react";
-import { setScene } from "../services/idb.services.ts";
+import { setScene } from "../../services/idb.services.ts";
 import styles from "./Draw.module.scss";
-import { LoginLogout } from "./LoginLogout.tsx";
-import { WorkerContext } from "./context/Worker.tsx";
+import { LoginLogout } from "../auth/LoginLogout.tsx";
+import { WorkerContext } from "../context/Worker.tsx";
 
 export const Draw = ({ scene }: { scene: ExcalidrawInitialDataState }) => {
   const excalidrawRef = useRef(null);

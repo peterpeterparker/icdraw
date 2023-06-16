@@ -1,8 +1,8 @@
 import { ExcalidrawInitialDataState } from "@excalidraw/excalidraw/types/types";
 import { initJuno } from "@junobuild/core";
 import { useEffect, useState } from "react";
-import { Auth } from "./components/Auth.tsx";
-import { Draw } from "./components/Draw.tsx";
+import { Auth } from "./components/context/Auth.tsx";
+import { Draw } from "./components/draw/Draw.tsx";
 import { Worker } from "./components/context/Worker.tsx";
 import { getScene } from "./services/idb.services.ts";
 

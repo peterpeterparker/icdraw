@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AuthContext } from "./Auth.tsx";
+import { AuthContext } from "../context/Auth.tsx";
 import { Login } from "./Login.tsx";
 import { Logout } from "./Logout.tsx";
 

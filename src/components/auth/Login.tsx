@@ -1,8 +1,8 @@
 import {InternetIdentityProvider, NFIDProvider, signIn} from "@junobuild/core";
 import { useContext } from "react";
-import { AuthContext } from "./Auth";
-import { IconII } from "./IconII";
-import { IconNFID } from "./IconNFID";
+import { AuthContext } from "../context/Auth.tsx";
+import { IconII } from "../icons/IconII.tsx";
+import { IconNFID } from "../icons/IconNFID.tsx";
 
 export const Login = () => {
   const { setBusy } = useContext(AuthContext);
