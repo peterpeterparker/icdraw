@@ -1,9 +1,10 @@
 import { ExcalidrawInitialDataState } from "@excalidraw/excalidraw/types/types";
+import { initJuno } from "@junobuild/core";
 import { useEffect, useState } from "react";
+import { Auth } from "./components/Auth.tsx";
 import { Draw } from "./components/Draw.tsx";
+import { Worker } from "./components/context/Worker.tsx";
 import { getScene } from "./services/idb.services.ts";
-import {Auth} from "./components/Auth.tsx";
-import {initJuno} from "@junobuild/core";
 
 const App = () => {
   const [ready, setReady] = useState(false);
@@ -33,9 +34,15 @@ const App = () => {
   }, []);
 
   return (
-    <Auth>
-      {scene !== undefined && ready ? <Draw scene={scene} /> : <div>Loading...</div>}
-    </Auth>
+    <Worker>
+      <Auth>
+        {scene !== undefined && ready ? (
+          <Draw scene={scene} />
+        ) : (
+          <div>Loading...</div>
+        )}
+      </Auth>
+    </Worker>
   );
 };
 
