@@ -7,9 +7,10 @@ import type {
 } from "@excalidraw/excalidraw/types/types";
 import { useRef } from "react";
 import { setScene } from "../services/idb.services.ts";
-import styles from "./ICDraw.module.scss";
+import styles from "./Draw.module.scss";
+import { LoginLogout } from "./LoginLogout.tsx";
 
-export const ICDraw = ({scene}: {scene: ExcalidrawInitialDataState}) => {
+export const Draw = ({ scene }: { scene: ExcalidrawInitialDataState }) => {
   const excalidrawRef = useRef(null);
 
   const onChange = async (
@@ -33,22 +34,7 @@ export const ICDraw = ({scene}: {scene: ExcalidrawInitialDataState}) => {
         initialData={scene}
         theme="dark"
         onChange={onChange}
-        renderTopRightUI={() => {
-          return (
-            <button
-              style={{
-                background: "#70b1ec",
-                border: "none",
-                color: "#fff",
-                width: "max-content",
-                fontWeight: "bold",
-              }}
-              onClick={() => window.alert("This is dummy top right UI")}
-            >
-              Click me
-            </button>
-          );
-        }}
+        renderTopRightUI={() => <LoginLogout />}
       />
     </main>
   );
