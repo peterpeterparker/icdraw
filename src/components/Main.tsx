@@ -1,6 +1,6 @@
-import {useContext, useEffect} from "react";
+import { useContext, useEffect } from "react";
 import { SceneContext } from "./context/Scene.tsx";
-import { Draw } from "./draw/Draw.tsx";
+import { MemoizedDraw } from "./draw/Draw.tsx";
 import { Footer } from "./misc/Footer.tsx";
 import { Header } from "./misc/Header.tsx";
 import { Spinner } from "./misc/Spinner.tsx";
@@ -22,7 +22,7 @@ export const Main = ({ ready }: { ready: boolean }) => {
         <>
           <Header />
 
-          <Draw scene={scene} />
+          <MemoizedDraw scene={scene} />
 
           <Footer />
         </>
