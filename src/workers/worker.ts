@@ -1,5 +1,19 @@
-import { User, getDoc, setDoc, unsafeIdentity } from "@junobuild/core";
+import { ExcalidrawImageElement } from "@excalidraw/excalidraw/types/element/types";
+import { BinaryFileData } from "@excalidraw/excalidraw/types/types";
+import {
+  Asset,
+  Satellite,
+  User,
+  deleteAsset,
+  getDoc,
+  listAssets,
+  setDoc,
+  unsafeIdentity,
+  uploadBlob,
+} from "@junobuild/core";
+import { nanoid } from "nanoid";
 import { getLastChange, getScene } from "../services/idb.services.ts";
+import { ExcalidrawScene } from "../types/excalidraw.ts";
 import { JunoScene } from "../types/juno.ts";
 import { PostMessage, PostMessageDataRequest } from "../types/post-message";
 
@@ -75,7 +89,7 @@ const sync = async (user: User | undefined | null) => {
   inProgress = true;
 
   postMessage({
-    msg: "busy"
+    msg: "busy",
   });
 
   try {
@@ -85,7 +99,7 @@ const sync = async (user: User | undefined | null) => {
       throw new Error("No scene found.");
     }
 
-    const { files, key, ...rest } = scene;
+    const { files, key, elements, ...rest } = scene;
 
     const satellite = {
       identity: await unsafeIdentity(),
@@ -104,13 +118,18 @@ const sync = async (user: User | undefined | null) => {
         ...doc,
         key,
         data: {
+          elements,
           ...rest,
         },
       },
       satellite,
     });
 
-    // TODO: save files
+    await uploadFiles({
+      elements,
+      files,
+      satellite,
+    });
 
     // Save timestamp to skip further changes if no changes
     lastChangeProcessed = lastChange;
@@ -124,8 +143,84 @@ const sync = async (user: User | undefined | null) => {
   inProgress = false;
 
   postMessage({
-    msg: "idle"
+    msg: "idle",
   });
+};
+
+const uploadFiles = async ({
+  files,
+  elements,
+  satellite,
+}: {
+  satellite: Satellite;
+} & Pick<ExcalidrawScene, "elements" | "files">) => {
+  if (!files) {
+    return;
+  }
+
+  const { assets } = await listAssets({
+    collection: "files",
+    satellite,
+  });
+
+  type File = {
+    key: string;
+    file: BinaryFileData;
+  };
+
+  let uploadFiles: File[] = [];
+  let deleteFiles: Asset[] = [];
+
+  for (const [key, file] of Object.entries(files)) {
+    const deleted =
+      elements?.find(
+        (element) =>
+          element.type === "image" &&
+          (element as ExcalidrawImageElement).fileId === key &&
+          element.isDeleted
+      ) !== undefined;
+    const reactivated =
+      elements?.find(
+        (element) =>
+          element.type === "image" &&
+          (element as ExcalidrawImageElement).fileId === key &&
+          !element.isDeleted
+      ) !== undefined;
+
+    const asset = assets.find(({ name }) => key === name);
+
+    if (deleted && !reactivated && asset !== undefined) {
+      deleteFiles = [...deleteFiles, asset];
+    }
+
+    if (asset === undefined && (!deleted || reactivated)) {
+      uploadFiles = [...uploadFiles, { key, file }];
+    }
+  }
+
+  await Promise.all([
+    ...deleteFiles.map((storageFile) =>
+      deleteAsset({
+        collection: "files",
+        storageFile,
+        satellite,
+      })
+    ),
+    ...uploadFiles.map(async ({ key, file }) =>
+      uploadBlob({
+        collection: "files",
+        filename: key,
+        data: await (await fetch(file.dataURL)).blob(),
+        headers: [
+          ...(file.mimeType === undefined
+            ? []
+            : ([["Content-Type", file.mimeType]] as [string, string][])),
+        ],
+        token: nanoid(),
+        satellite,
+      })
+    ),
+  ]);
 };
 
 export {};
