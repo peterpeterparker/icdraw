@@ -14,7 +14,7 @@ import {
 import { nanoid } from "nanoid";
 import { getLastChange, getScene } from "../services/idb.services.ts";
 import { ExcalidrawScene } from "../types/excalidraw.ts";
-import { JunoScene } from "../types/juno.ts";
+import { JunoScene, JunoSceneKey } from "../types/juno.ts";
 import { PostMessage, PostMessageDataRequest } from "../types/post-message";
 
 onmessage = async ({
@@ -129,6 +129,7 @@ const sync = async (user: User | undefined | null) => {
       elements,
       files,
       satellite,
+      key,
     });
 
     // Save timestamp to skip further changes if no changes
@@ -151,9 +152,10 @@ const uploadFiles = async ({
   files,
   elements,
   satellite,
+  key: sceneKey,
 }: {
   satellite: Satellite;
-} & Pick<ExcalidrawScene, "elements" | "files">) => {
+} & Pick<ExcalidrawScene, "elements" | "files"> & { key: JunoSceneKey }) => {
   if (!files) {
     return;
   }
@@ -217,6 +219,7 @@ const uploadFiles = async ({
             : ([["Content-Type", file.mimeType]] as [string, string][])),
         ],
         token: nanoid(),
+        description: sceneKey,
         satellite,
       })
     ),

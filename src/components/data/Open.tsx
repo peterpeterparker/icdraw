@@ -1,5 +1,5 @@
 import { FolderOpenOutlined } from "@ant-design/icons";
-import { Doc, listDocs } from "@junobuild/core";
+import {Doc, listAssets, listDocs} from "@junobuild/core";
 import { Button, List, Modal, Radio, RadioChangeEvent, message } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { JunoScene } from "../../types/juno.ts";
@@ -53,6 +53,18 @@ export const Open = () => {
     setConfirmLoading(true);
 
     const { key, data } = selected;
+
+    const { assets } = await listAssets({
+      collection: "files",
+      filter: {
+        matcher: {
+          description: key
+        }
+      }
+    });
+
+    // TODO
+    console.log(assets)
 
     setScene?.({
       key,
