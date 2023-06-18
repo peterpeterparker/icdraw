@@ -28,11 +28,19 @@
     display: none !important;
   }
 
+  :global([data-testid="clear-canvas-button"]) {
+    display: none !important;
+  }
+
   :global(div.dropdown-menu-group) {
     display: none !important;
   }
 
   :global(div.dropdown-menu-group + div) {
+    display: none !important;
+  }
+
+  :global(div.mobile-misc-tools-container) {
     display: none !important;
   }
 }

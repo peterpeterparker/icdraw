@@ -1,5 +1,6 @@
 import { User, getDoc, setDoc, unsafeIdentity } from "@junobuild/core";
 import { getLastChange, getScene } from "../services/idb.services.ts";
+import { JunoScene } from "../types/juno.ts";
 import { PostMessage, PostMessageDataRequest } from "../types/post-message";
 
 onmessage = async ({
@@ -87,19 +88,17 @@ const sync = async (user: User | undefined | null) => {
       satelliteId: "fqotu-wqaaa-aaaal-acp3a-cai",
     };
 
-    const docKey = `${user.key}#${key}`;
-
-    const doc = await getDoc({
+    const doc = await getDoc<JunoScene>({
       collection: "scenes",
-      key: docKey,
+      key,
       satellite,
     });
 
-    await setDoc({
+    await setDoc<JunoScene>({
       collection: "scenes",
       doc: {
         ...doc,
-        key: `${user.key}#${key}`,
+        key,
         data: {
           ...rest,
         },

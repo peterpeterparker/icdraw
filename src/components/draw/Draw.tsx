@@ -16,6 +16,7 @@ export const Draw = ({ scene }: { scene: Scene }) => {
   ) => {
     const updatedScene: Scene = {
       key: scene.key,
+      name: scene.name,
       lastChange: Date.now(),
       elements,
       appState,

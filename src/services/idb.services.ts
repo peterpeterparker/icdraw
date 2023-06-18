@@ -6,6 +6,7 @@ const stateStore = createStore("icdraw-state", "state");
 const filesStore = createStore("icdraw-files", "files");
 
 const KEY_SCENE = "scene-key";
+const KEY_NAME = "scene-name";
 const KEY_LAST_CHANGE = "last-change";
 const KEY_APP_STATE = "app-state";
 const KEY_ELEMENTS = "elements";
@@ -21,10 +22,12 @@ const setState = ({
   elements,
   key,
   lastChange,
+  name,
 }: Omit<SetScene, "files">) =>
   setMany(
     [
       [KEY_SCENE, key],
+      [KEY_NAME, name],
       [KEY_LAST_CHANGE, lastChange],
       [KEY_APP_STATE, appState],
       [KEY_ELEMENTS, elements],
@@ -40,7 +43,7 @@ const setFiles = (files: BinaryFiles | undefined) =>
 export const getScene = async (): Promise<Scene | undefined> => {
   const [state, files] = await Promise.all([
     getMany(
-      [KEY_SCENE, KEY_LAST_CHANGE, KEY_APP_STATE, KEY_ELEMENTS],
+      [KEY_SCENE, KEY_NAME, KEY_LAST_CHANGE, KEY_APP_STATE, KEY_ELEMENTS],
       stateStore
     ),
     entries(filesStore),
@@ -50,7 +53,7 @@ export const getScene = async (): Promise<Scene | undefined> => {
     return undefined;
   }
 
-  const [key, lastChange, appState, elements] = state;
+  const [key, name, lastChange, appState, elements] = state;
 
   if (key === undefined) {
     return undefined;
@@ -58,6 +61,7 @@ export const getScene = async (): Promise<Scene | undefined> => {
 
   return {
     key,
+    name,
     lastChange,
     appState,
     elements,

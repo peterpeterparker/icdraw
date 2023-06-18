@@ -6,9 +6,9 @@ import { Worker } from "./components/context/Worker.tsx";
 import { Draw } from "./components/draw/Draw.tsx";
 import { Footer } from "./components/misc/Footer.tsx";
 import { Header } from "./components/misc/Header.tsx";
+import { Spinner } from "./components/misc/Spinner.tsx";
 import { getScene } from "./services/idb.services.ts";
 import { Scene } from "./types/app.ts";
-import {Spinner} from "./components/misc/Spinner.tsx";
 
 const App = () => {
   const [ready, setReady] = useState(false);
@@ -21,7 +21,11 @@ const App = () => {
       setScene(
         existingScene !== undefined
           ? existingScene
-          : { key: nanoid(), lastChange: undefined }
+          : {
+              key: nanoid(),
+              lastChange: undefined,
+              name: `Unnamed ${new Date().toLocaleString()}`,
+            }
       );
     })();
   }, []);
