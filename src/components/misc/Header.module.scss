@@ -1,0 +1,9 @@
+.toolbar {
+  padding: 0 0 0 var(--padding-4x);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--padding);
+}

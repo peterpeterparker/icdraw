@@ -5,7 +5,7 @@ export type PostMessageDataRequest = {
 };
 export type PostMessageDataResponse = object;
 
-export type PostMessageRequest = "start" | "stop";
+export type PostMessageRequest = "start" | "stop" | "busy" | "idle";
 export type PostMessageResponse = object;
 
 export interface PostMessage<

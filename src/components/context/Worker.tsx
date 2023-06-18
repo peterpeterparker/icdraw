@@ -5,16 +5,23 @@ import {
   useEffect,
   useState,
 } from "react";
+import {
+  PostMessage,
+  PostMessageDataResponse,
+} from "../../types/post-message.ts";
 import { AuthContext } from "./Auth.tsx";
 
 export const WorkerContext = createContext<{
   worker: Worker | undefined;
+  busy: boolean;
 }>({
   worker: undefined,
+  busy: false,
 });
 
 export const Worker = ({ children }: { children?: ReactNode }) => {
   const [worker, setWorker] = useState<Worker | undefined>(undefined);
+  const [busy, setBusy] = useState<boolean>(false);
 
   const { user } = useContext(AuthContext);
 
@@ -35,6 +42,15 @@ export const Worker = ({ children }: { children?: ReactNode }) => {
           user,
         },
       });
+
+      if (w !== undefined) {
+        w.onmessage = ({
+          data,
+        }: MessageEvent<PostMessage<PostMessageDataResponse>>) => {
+          const { msg } = data;
+          setBusy(msg === "busy");
+        };
+      }
     })();
 
     return () => worker?.postMessage({ msg: "stop" });
@@ -43,7 +59,7 @@ export const Worker = ({ children }: { children?: ReactNode }) => {
   }, [user]);
 
   return (
-    <WorkerContext.Provider value={{ worker }}>
+    <WorkerContext.Provider value={{ worker, busy }}>
       {children}
     </WorkerContext.Provider>
   );

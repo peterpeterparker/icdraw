@@ -74,6 +74,10 @@ const sync = async (user: User | undefined | null) => {
 
   inProgress = true;
 
+  postMessage({
+    msg: "busy"
+  });
+
   try {
     const scene = await getScene();
 
@@ -118,6 +122,10 @@ const sync = async (user: User | undefined | null) => {
   }
 
   inProgress = false;
+
+  postMessage({
+    msg: "idle"
+  });
 };
 
 export {};
