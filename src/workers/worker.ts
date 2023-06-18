@@ -1,56 +1,126 @@
 import { User, getDoc, setDoc, unsafeIdentity } from "@junobuild/core";
-import { getScene } from "../services/idb.services.ts";
+import {getLastChange, getScene} from "../services/idb.services.ts";
 import { PostMessage, PostMessageDataRequest } from "../types/post-message";
 
 onmessage = async ({
   data: { msg, data },
 }: MessageEvent<PostMessage<PostMessageDataRequest>>) => {
   switch (msg) {
-    case "sync":
-      await sync(data?.user);
+    case "start":
+      await startTimer(data?.user);
+      break;
+    case 'stop':
+      stopTimer();
       break;
   }
 };
+
+let timer: NodeJS.Timeout | undefined = undefined;
+
+const stopTimer = () => {
+  if (!timer) {
+    return;
+  }
+
+  clearInterval(timer);
+  timer = undefined;
+};
+
+const startTimer = async (user: User | undefined | null) => {
+  // Avoid re-starting the timer
+  if (timer !== undefined) {
+    return;
+  }
+
+  if (user === null || user === undefined) {
+    // We do nothing if no user
+    console.error(
+        "Attempted to initiate a worker without a user."
+    );
+    return;
+  }
+
+  const execute = async () => await sync(user);
+
+  // We sync the cycles now but also schedule the update after wards
+  await execute();
+
+  timer = setInterval(execute, 1000);
+}
+
+let inProgress = false;
+let lastChangeProcessed: number | undefined = undefined;
 
 const sync = async (user: User | undefined | null) => {
   if (user === null || user === undefined) {
     return;
   }
 
-  const scene = await getScene();
-
-  if (scene === undefined) {
+  if (inProgress) {
+    // Already in progress
     return;
   }
 
-  const { files, key, ...rest } = scene;
+  const lastChange = await getLastChange();
 
-  const satellite = {
-    identity: await unsafeIdentity(),
-    satelliteId: "fqotu-wqaaa-aaaal-acp3a-cai",
-  };
+  if (lastChange === undefined) {
+    // There weren't any changes
+    return;
+  }
 
-  const docKey = `${user.key}#${key}`;
+  if (lastChangeProcessed !== undefined && lastChange <= lastChangeProcessed) {
+    // No new changes
+    return;
+  }
 
-  const doc = await getDoc({
-    collection: "scenes",
-    key: docKey,
-    satellite,
-  });
+  inProgress = true;
 
-  console.log('DOC', doc);
+  try {
+    const scene = await getScene();
 
-  await setDoc({
-    collection: "scenes",
-    doc: {
-      ...doc,
-      key: `${user.key}#${key}`,
-      data: {
-        ...rest,
+    if (scene === undefined) {
+      throw new Error("No scene found.");
+    }
+
+    const { files, key, ...rest } = scene;
+
+    const satellite = {
+      identity: await unsafeIdentity(),
+      satelliteId: "fqotu-wqaaa-aaaal-acp3a-cai",
+    };
+
+    const docKey = `${user.key}#${key}`;
+
+    const doc = await getDoc({
+      collection: "scenes",
+      key: docKey,
+      satellite,
+    });
+
+    await setDoc({
+      collection: "scenes",
+      doc: {
+        ...doc,
+        key: `${user.key}#${key}`,
+        data: {
+          ...rest,
+        },
       },
-    },
-    satellite,
-  });
+      satellite,
+    });
+
+    // TODO: save files
+
+    // Save timestamp to skip further changes if no changes
+    lastChangeProcessed = lastChange;
+  } catch (err: unknown) {
+    console.error(err);
+
+    // In case of error we stop the sync
+    stopTimer();
+  }
+
+  inProgress = false;
 };
 
 export {};

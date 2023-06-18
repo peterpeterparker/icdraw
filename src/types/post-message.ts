@@ -5,7 +5,7 @@ export type PostMessageDataRequest = {
 };
 export type PostMessageDataResponse = object;
 
-export type PostMessageRequest = "sync";
+export type PostMessageRequest = "start" | "stop";
 export type PostMessageResponse = object;
 
 export interface PostMessage<

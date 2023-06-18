@@ -1,21 +1,31 @@
 import { BinaryFiles } from "@excalidraw/excalidraw/types/types";
-import { createStore, entries, getMany, setMany } from "idb-keyval";
+import { createStore, entries, get, getMany, setMany } from "idb-keyval";
 import { Scene } from "../types/app.ts";
 
 const stateStore = createStore("icdraw-state", "state");
 const filesStore = createStore("icdraw-files", "files");
 
 const KEY_SCENE = "scene-key";
+const KEY_LAST_CHANGE = "last-change";
 const KEY_APP_STATE = "app-state";
 const KEY_ELEMENTS = "elements";
 
-export const setScene = async ({ files, ...rest }: Scene) =>
+export type SetScene = Required<Pick<Scene, "lastChange">> &
+  Omit<Scene, "lastChange">;
+
+export const setScene = async ({ files, ...rest }: SetScene) =>
   Promise.all([setState(rest), setFiles(files)]);
 
-const setState = ({ appState, elements, key }: Omit<Scene, "files">) =>
+const setState = ({
+  appState,
+  elements,
+  key,
+  lastChange,
+}: Omit<SetScene, "files">) =>
   setMany(
     [
       [KEY_SCENE, key],
+      [KEY_LAST_CHANGE, lastChange],
       [KEY_APP_STATE, appState],
       [KEY_ELEMENTS, elements],
     ],
@@ -29,7 +39,10 @@ const setFiles = (files: BinaryFiles | undefined) =>
 
 export const getScene = async (): Promise<Scene | undefined> => {
   const [state, files] = await Promise.all([
-    getMany([KEY_SCENE, KEY_APP_STATE, KEY_ELEMENTS], stateStore),
+    getMany(
+      [KEY_SCENE, KEY_LAST_CHANGE, KEY_APP_STATE, KEY_ELEMENTS],
+      stateStore
+    ),
     entries(filesStore),
   ]);
 
@@ -37,14 +50,15 @@ export const getScene = async (): Promise<Scene | undefined> => {
     return undefined;
   }
 
-  const [key, appState, elements] = state;
+  const [key, lastChange, appState, elements] = state;
 
   if (key === undefined) {
-      return undefined;
+    return undefined;
   }
 
   return {
     key,
+    lastChange,
     appState,
     elements,
     files: files.reduce(
@@ -53,3 +67,6 @@ export const getScene = async (): Promise<Scene | undefined> => {
     ),
   };
 };
+
+export const getLastChange = (): Promise<number | undefined> =>
+  get(KEY_LAST_CHANGE, stateStore);

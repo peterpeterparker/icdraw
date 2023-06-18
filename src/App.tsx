@@ -5,9 +5,9 @@ import { Auth } from "./components/context/Auth.tsx";
 import { Worker } from "./components/context/Worker.tsx";
 import { Draw } from "./components/draw/Draw.tsx";
 import { Footer } from "./components/misc/Footer.tsx";
+import { Header } from "./components/misc/Header.tsx";
 import { getScene } from "./services/idb.services.ts";
 import { Scene } from "./types/app.ts";
-import {Header} from "./components/misc/Header.tsx";
 
 const App = () => {
   const [ready, setReady] = useState(false);
@@ -17,8 +17,11 @@ const App = () => {
   useEffect(() => {
     (async () => {
       const existingScene = await getScene();
-      console.log(existingScene);
-      setScene(existingScene !== undefined ? existingScene : { key: nanoid() });
+      setScene(
+        existingScene !== undefined
+          ? existingScene
+          : { key: nanoid(), lastChange: undefined }
+      );
     })();
   }, []);
 
@@ -33,8 +36,8 @@ const App = () => {
   }, []);
 
   return (
-    <Worker>
-      <Auth>
+    <Auth>
+      <Worker>
         <Header />
 
         {scene !== undefined && ready ? (
@@ -44,8 +47,8 @@ const App = () => {
         )}
 
         <Footer />
-      </Auth>
-    </Worker>
+      </Worker>
+    </Auth>
   );
 };
 
