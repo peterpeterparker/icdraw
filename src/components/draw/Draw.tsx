@@ -42,9 +42,15 @@ export const Draw = ({ initialData }: { initialData: Scene }) => {
       return;
     }
 
+    // TODO: reload only when needed
+
     excalidrawAPI.updateScene({
       elements: scene.elements,
     });
+
+    excalidrawAPI.addFiles(
+      Object.entries(scene.files ?? {}).map(([_, value]) => value)
+    );
   }, [scene]);
 
   return (

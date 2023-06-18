@@ -1,10 +1,11 @@
 import { FolderOpenOutlined } from "@ant-design/icons";
-import {Doc, listAssets, listDocs} from "@junobuild/core";
+import { Doc, listDocs } from "@junobuild/core";
 import { Button, List, Modal, Radio, RadioChangeEvent, message } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { JunoScene } from "../../types/juno.ts";
 import { SceneContext } from "../context/Scene.tsx";
-import {WorkerContext} from "../context/Worker.tsx";
+import { WorkerContext } from "../context/Worker.tsx";
+import {loadAssets} from "../../services/assets.services.ts";
 
 export const Open = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -50,32 +51,32 @@ export const Open = () => {
       return;
     }
 
-    setConfirmLoading(true);
+    try {
+      setConfirmLoading(true);
 
-    const { key, data } = selected;
+      const { key, data } = selected;
 
-    const { assets } = await listAssets({
-      collection: "files",
-      filter: {
-        matcher: {
-          description: key
-        }
-      }
-    });
+      const files = await loadAssets(key);
 
-    // TODO
-    console.log(assets)
+      setScene?.({
+        key,
+        files,
+        ...data,
+      });
 
-    setScene?.({
-      key,
-      ...data,
-    });
+      setOpen(false);
 
-    setOpen(false);
+      // Reset list
+      setItems([]);
+      setSelected(undefined);
+    } catch (err: unknown) {
+      console.error(err);
 
-    // Reset list
-    setItems([]);
-    setSelected(undefined);
+      await messageApi.open({
+        type: "error",
+        content: "Cannot load scene.",
+      });
+    }
 
     setConfirmLoading(false);
   };
