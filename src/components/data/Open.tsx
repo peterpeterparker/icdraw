@@ -1,8 +1,9 @@
 import { FolderOpenOutlined } from "@ant-design/icons";
 import { Doc, listDocs } from "@junobuild/core";
 import { Button, List, Modal, Radio, RadioChangeEvent, message } from "antd";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { JunoScene } from "../../types/juno.ts";
+import { SceneContext } from "../context/Scene.tsx";
 
 export const Open = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -14,6 +15,8 @@ export const Open = () => {
   const [selected, setSelected] = useState<Doc<JunoScene> | undefined>(
     undefined
   );
+
+  const { setScene } = useContext(SceneContext);
 
   const showModal = () => setOpen(true);
 
@@ -47,23 +50,20 @@ export const Open = () => {
 
     setConfirmLoading(true);
 
-    try {
-      setOpen(false);
+    const { key, data } = selected;
 
-      // Reset list
-      setItems([]);
-      setSelected(undefined);
+    setScene?.({
+      key,
+      ...data,
+    });
 
-      setConfirmLoading(false);
-      // TODO: files
-    } catch (err: unknown) {
-      console.error(err);
+    setOpen(false);
 
-      await messageApi.open({
-        type: "error",
-        content: "There was an error loading your scene.",
-      });
-    }
+    // Reset list
+    setItems([]);
+    setSelected(undefined);
+
+    setConfirmLoading(false);
   };
 
   const handleCancel = () => setOpen(false);
