@@ -1,5 +1,7 @@
 import { authSubscribe, User } from "@junobuild/core";
 import { createContext, ReactNode, useEffect, useState } from "react";
+import { Spinner } from "../misc/Spinner.tsx";
+import styles from "./Auth.module.scss";
 
 export const AuthContext = createContext<{
   user: undefined | null | User;
@@ -25,7 +27,11 @@ export const Auth = ({ children }: { children?: ReactNode }) => {
     <AuthContext.Provider value={{ user, setBusy }}>
       {children}
 
-      {busy ? <div>Spinner</div> : undefined}
+      {busy ? (
+        <div className={styles.loading}>
+          <Spinner />
+        </div>
+      ) : undefined}
     </AuthContext.Provider>
   );
 };

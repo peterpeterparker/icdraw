@@ -8,6 +8,7 @@ import { Footer } from "./components/misc/Footer.tsx";
 import { Header } from "./components/misc/Header.tsx";
 import { getScene } from "./services/idb.services.ts";
 import { Scene } from "./types/app.ts";
+import {Spinner} from "./components/misc/Spinner.tsx";
 
 const App = () => {
   const [ready, setReady] = useState(false);
@@ -38,15 +39,17 @@ const App = () => {
   return (
     <Auth>
       <Worker>
-        <Header />
-
         {scene !== undefined && ready ? (
-          <Draw scene={scene} />
-        ) : (
-          <div>Loading...</div>
-        )}
+          <>
+            <Header />
 
-        <Footer />
+            <Draw scene={scene} />
+
+            <Footer />
+          </>
+        ) : (
+          <Spinner />
+        )}
       </Worker>
     </Auth>
   );

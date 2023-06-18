@@ -1,8 +1,10 @@
+import Icon from "@ant-design/icons";
 import {
   InternetIdentityProvider,
   NFIDProvider,
   signIn,
 } from "@junobuild/core";
+import { Button } from "antd";
 import { useContext } from "react";
 import { AuthContext } from "../context/Auth.tsx";
 import { IconII } from "../icons/IconII.tsx";
@@ -44,28 +46,22 @@ export const Login = () => {
     );
 
   return (
-    <div className="mt-12 flex flex-col items-center justify-center gap-3 max-w-sm mx-auto">
-      <button
-        type="button"
+    <>
+      <Button
         onClick={signInII}
-        className="w-full rounded-md bg-black border-2 border-black hover:border-indigo-500 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        shape="circle"
         aria-label="Sign-in with Internet Identity"
       >
-        <div className="flex items-center justify-center gap-1.5">
-          <IconII />
-        </div>
-      </button>
+        <Icon component={IconII} />
+      </Button>
 
-      <button
-        type="button"
+      <Button
         onClick={signInNFID}
-        className="w-full rounded-md bg-white border-2 border-black hover:border-indigo-500 px-3.5 py-1.5 text-black hover:text-white font-semibold leading-7 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        shape="circle"
         aria-label="Sign-in with NFID"
       >
-        <div className="flex items-center justify-center gap-1.5">
-          <IconNFID />
-        </div>
-      </button>
-    </div>
+        <Icon component={IconNFID} />
+      </Button>
+    </>
   );
 };

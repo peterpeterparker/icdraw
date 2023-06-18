@@ -1,0 +1,8 @@
+.loading {
+  position: fixed;
+  inset: 0;
+
+  background: black;
+
+  z-index: var(--z-index);
+}
