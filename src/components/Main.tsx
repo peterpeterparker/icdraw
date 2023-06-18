@@ -22,7 +22,7 @@ export const Main = ({ ready }: { ready: boolean }) => {
         <>
           <Header />
 
-          <MemoizedDraw scene={scene} />
+          <MemoizedDraw initialData={scene} />
 
           <Footer />
         </>

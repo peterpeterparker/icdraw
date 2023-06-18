@@ -8,17 +8,21 @@ import { Scene } from "../../types/app.ts";
 import { SceneContext } from "../context/Scene.tsx";
 import styles from "./Draw.module.scss";
 
-export const Draw = ({ scene }: { scene: Scene }) => {
+export const Draw = ({ initialData }: { initialData: Scene }) => {
   const [excalidrawAPI, setExcalidrawAPI] =
     useState<ExcalidrawImperativeAPI | null>(null);
 
-  const { setScene } = useContext(SceneContext);
+  const { setScene, scene } = useContext(SceneContext);
 
   const onChange = async (
     elements: readonly ExcalidrawElement[],
     appState: AppState,
     files: BinaryFiles
   ) => {
+    if (scene === undefined) {
+      return;
+    }
+
     const updatedScene: Scene = {
       key: scene.key,
       name: scene.name,
@@ -34,7 +38,7 @@ export const Draw = ({ scene }: { scene: Scene }) => {
   };
 
   useEffect(() => {
-    if (excalidrawAPI === null) {
+    if (excalidrawAPI === null || scene === undefined) {
       return;
     }
 
@@ -48,7 +52,7 @@ export const Draw = ({ scene }: { scene: Scene }) => {
       <Excalidraw
         ref={(api) => setExcalidrawAPI(api as ExcalidrawImperativeAPI)}
         initialData={{
-          ...scene,
+          ...initialData,
           scrollToContent: true,
         }}
         theme="dark"
@@ -66,6 +70,6 @@ export const Draw = ({ scene }: { scene: Scene }) => {
 
 export const MemoizedDraw = memo(
   Draw,
-  ({ scene: { key: prevKey } }, { scene: { key: nextKey } }) =>
+  ({ initialData: { key: prevKey } }, { initialData: { key: nextKey } }) =>
     prevKey === nextKey
 );
