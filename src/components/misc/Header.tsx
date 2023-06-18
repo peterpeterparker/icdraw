@@ -6,6 +6,7 @@ import { New } from "../data/New.tsx";
 import { Open } from "../data/Open.tsx";
 import { Busy } from "./Busy.tsx";
 import styles from "./Header.module.scss";
+import {Edit} from "../data/Edit.tsx";
 
 export const Header = () => {
   const { user } = useContext(AuthContext);
@@ -17,6 +18,7 @@ export const Header = () => {
       }`}
     >
       <New />
+      <Edit />
 
       {user !== null && user !== undefined ? (
         <>
