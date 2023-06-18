@@ -6,7 +6,7 @@ import { useContext, useRef } from "react";
 import { setScene } from "../../services/idb.services.ts";
 import { Scene } from "../../types/app.ts";
 import { debounce } from "../../utils/debounce.utils.ts";
-import { LoginLogout } from "../auth/LoginLogout.tsx";
+import { Header } from "../misc/Header.tsx";
 import { AuthContext } from "../context/Auth.tsx";
 import { WorkerContext } from "../context/Worker.tsx";
 import styles from "./Draw.module.scss";
@@ -45,7 +45,7 @@ export const Draw = ({ scene }: { scene: Scene }) => {
   };
 
   return (
-    <main className={styles.wrapper}>
+    <div className={styles.wrapper}>
       <Excalidraw
         ref={excalidrawRef}
         initialData={{
@@ -54,7 +54,7 @@ export const Draw = ({ scene }: { scene: Scene }) => {
         }}
         theme="dark"
         onChange={onChange}
-        renderTopRightUI={() => <LoginLogout />}
+        renderTopRightUI={() => <Header />}
         UIOptions={{
           canvasActions: {
             loadScene: false,
@@ -62,6 +62,6 @@ export const Draw = ({ scene }: { scene: Scene }) => {
           },
         }}
       />
-    </main>
+    </div>
   );
 };

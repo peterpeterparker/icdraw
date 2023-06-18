@@ -1,4 +1,39 @@
 .wrapper {
   width: 100%;
-  height: 100%;
+  max-width: 1440px;
+
+  flex: 2;
+
+  padding: var(--padding-2x);
+
+  :global(div.excalidraw) {
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    box-shadow: 3px 3px green;
+  }
+
+  :global(div.layer-ui__wrapper__top-right) {
+    display: none !important;
+  }
+
+  :global(div.layer-ui__wrapper__footer-right) {
+    display: none !important;
+  }
+
+  :global([data-testid="json-export-button"]) {
+    display: none !important;;
+  }
+
+  :global([data-testid="help-menu-item"]) {
+    display: none !important;;
+  }
+
+  :global(div.dropdown-menu-group) {
+    display: none !important;
+  }
+
+  :global(div.dropdown-menu-group + div) {
+    display: none !important;
+  }
+
 }
