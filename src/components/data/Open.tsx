@@ -4,6 +4,7 @@ import { Button, List, Modal, Radio, RadioChangeEvent, message } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { JunoScene } from "../../types/juno.ts";
 import { SceneContext } from "../context/Scene.tsx";
+import {WorkerContext} from "../context/Worker.tsx";
 
 export const Open = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -17,6 +18,7 @@ export const Open = () => {
   );
 
   const { setScene } = useContext(SceneContext);
+  const { busy } = useContext(WorkerContext);
 
   const showModal = () => setOpen(true);
 
@@ -79,6 +81,7 @@ export const Open = () => {
         shape="circle"
         icon={<FolderOpenOutlined />}
         aria-label="Open a scene"
+        disabled={busy}
       ></Button>
 
       <Modal

@@ -3,12 +3,14 @@ import { Button, Popconfirm } from "antd";
 import { useContext, useState } from "react";
 import { newScene } from "../../utils/scene.utils.ts";
 import { SceneContext } from "../context/Scene.tsx";
+import {WorkerContext} from "../context/Worker.tsx";
 
 export const New = () => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const { setScene } = useContext(SceneContext);
+  const { busy } = useContext(WorkerContext);
 
   const showPopconfirm = () => setOpen(true);
 
@@ -40,6 +42,7 @@ export const New = () => {
         shape="circle"
         icon={<FileAddOutlined />}
         aria-label="New"
+        disabled={busy}
       ></Button>
     </Popconfirm>
   );

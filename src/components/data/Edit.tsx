@@ -3,6 +3,7 @@ import { Button, Input, Modal, message } from "antd";
 import * as React from "react";
 import { useContext, useEffect, useState } from "react";
 import { SceneContext } from "../context/Scene.tsx";
+import {WorkerContext} from "../context/Worker.tsx";
 
 export const Edit = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -13,6 +14,7 @@ export const Edit = () => {
   const [sceneName, setSceneName] = useState<string | undefined>(undefined);
 
   const { scene, setScene } = useContext(SceneContext);
+  const { busy } = useContext(WorkerContext);
 
   const showModal = () => setOpen(true);
 
@@ -71,6 +73,7 @@ export const Edit = () => {
         shape="circle"
         icon={<EditOutlined />}
         aria-label="Edit scene name"
+        disabled={busy}
       ></Button>
 
       <Modal
