@@ -21,11 +21,11 @@
   }
 
   :global([data-testid="json-export-button"]) {
-    display: none !important;;
+    display: none !important;
   }
 
   :global([data-testid="help-menu-item"]) {
-    display: none !important;;
+    display: none !important;
   }
 
   :global(div.dropdown-menu-group) {
@@ -35,5 +35,4 @@
   :global(div.dropdown-menu-group + div) {
     display: none !important;
   }
-
 }

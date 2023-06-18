@@ -1,4 +1,4 @@
-import {ExcalidrawScene} from "./excalidraw.ts";
+import { ExcalidrawScene } from "./excalidraw.ts";
 
 export type JunoSceneKey = string;
 

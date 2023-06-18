@@ -1,5 +1,5 @@
 import { User, getDoc, setDoc, unsafeIdentity } from "@junobuild/core";
-import {getLastChange, getScene} from "../services/idb.services.ts";
+import { getLastChange, getScene } from "../services/idb.services.ts";
 import { PostMessage, PostMessageDataRequest } from "../types/post-message";
 
 onmessage = async ({
@@ -9,7 +9,7 @@ onmessage = async ({
     case "start":
       await startTimer(data?.user);
       break;
-    case 'stop':
+    case "stop":
       stopTimer();
       break;
   }
@@ -34,9 +34,7 @@ const startTimer = async (user: User | undefined | null) => {
 
   if (user === null || user === undefined) {
     // We do nothing if no user
-    console.error(
-        "Attempted to initiate a worker without a user."
-    );
+    console.error("Attempted to initiate a worker without a user.");
     return;
   }
 
@@ -46,7 +44,7 @@ const startTimer = async (user: User | undefined | null) => {
   await execute();
 
   timer = setInterval(execute, 1000);
-}
+};
 
 let inProgress = false;
 let lastChangeProcessed: number | undefined = undefined;

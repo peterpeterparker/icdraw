@@ -1,4 +1,8 @@
-import {InternetIdentityProvider, NFIDProvider, signIn} from "@junobuild/core";
+import {
+  InternetIdentityProvider,
+  NFIDProvider,
+  signIn,
+} from "@junobuild/core";
 import { useContext } from "react";
 import { AuthContext } from "../context/Auth.tsx";
 import { IconII } from "../icons/IconII.tsx";
