@@ -1,15 +1,15 @@
 import { FileAddOutlined } from "@ant-design/icons";
 import { Button, Popconfirm } from "antd";
 import { useContext, useState } from "react";
-import { newScene } from "../../utils/scene.utils.ts";
-import { SceneContext } from "../context/Scene.tsx";
-import {WorkerContext} from "../context/Worker.tsx";
+import {newMetadata, newScene, reloadScene} from "../../utils/scene.utils.ts";
+import { MetadataContext } from "../context/Metadata.tsx";
+import { WorkerContext } from "../context/Worker.tsx";
 
 export const New = () => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const { setScene } = useContext(SceneContext);
+  const { setMetadata } = useContext(MetadataContext);
   const { busy } = useContext(WorkerContext);
 
   const showPopconfirm = () => setOpen(true);
@@ -17,7 +17,9 @@ export const New = () => {
   const handleOk = () => {
     setConfirmLoading(true);
 
-    setScene?.(newScene());
+    setMetadata?.(newMetadata());
+
+    reloadScene(newScene());
 
     setOpen(false);
     setConfirmLoading(false);

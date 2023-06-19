@@ -2,7 +2,7 @@ import { EditOutlined } from "@ant-design/icons";
 import { Button, Input, Modal, message } from "antd";
 import * as React from "react";
 import { useContext, useEffect, useState } from "react";
-import { SceneContext } from "../context/Scene.tsx";
+import { MetadataContext } from "../context/Metadata.tsx";
 import {WorkerContext} from "../context/Worker.tsx";
 
 export const Edit = () => {
@@ -13,18 +13,18 @@ export const Edit = () => {
 
   const [sceneName, setSceneName] = useState<string | undefined>(undefined);
 
-  const { scene, setScene } = useContext(SceneContext);
+  const { metadata, setMetadata } = useContext(MetadataContext);
   const { busy } = useContext(WorkerContext);
 
   const showModal = () => setOpen(true);
 
   useEffect(() => {
-    if (!open || scene === undefined) {
+    if (!open || metadata === undefined) {
       return;
     }
 
-    setSceneName(scene.name);
-  }, [open, scene]);
+    setSceneName(metadata.name);
+  }, [open, metadata]);
 
   const handleOk = async () => {
     if (sceneName === undefined || sceneName === "") {
@@ -35,7 +35,7 @@ export const Edit = () => {
       return;
     }
 
-    if (scene === undefined) {
+    if (metadata === undefined) {
       await messageApi.open({
         type: "error",
         content: "The scene is undefined.",
@@ -45,10 +45,9 @@ export const Edit = () => {
 
     setConfirmLoading(true);
 
-    setScene?.({
-      ...scene,
+    setMetadata?.({
+      ...metadata,
       name: sceneName,
-      lastChange: Date.now()
     });
 
     setOpen(false);

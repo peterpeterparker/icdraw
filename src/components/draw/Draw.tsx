@@ -2,80 +2,97 @@ import { Excalidraw } from "@excalidraw/excalidraw";
 import type { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
 import type { AppState, BinaryFiles } from "@excalidraw/excalidraw/types/types";
 import { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types/types";
-import { memo, useContext, useEffect, useState } from "react";
-import { setScene as setSceneIDB } from "../../services/idb.services.ts";
+import { memo, useEffect, useRef, useState } from "react";
+import {
+  getScene,
+  setScene as setSceneIDB,
+} from "../../services/idb.services.ts";
 import { Scene } from "../../types/app.ts";
-import { SceneContext } from "../context/Scene.tsx";
+import { newScene } from "../../utils/scene.utils.ts";
 import styles from "./Draw.module.scss";
 
-export const Draw = ({ initialData }: { initialData: Scene }) => {
-  const [excalidrawAPI, setExcalidrawAPI] =
+const Draw = () => {
+  const [excalidrawAPI, _setExcalidrawAPI] =
     useState<ExcalidrawImperativeAPI | null>(null);
 
-  const { setScene, scene } = useContext(SceneContext);
+  const [initialData, setInitialData] = useState<Scene | undefined>(undefined);
+
+  useEffect(() => {
+    (async () => {
+      const existingScene = await getScene();
+      setInitialData(existingScene !== undefined ? existingScene : newScene());
+    })();
+  }, []);
 
   const onChange = async (
     elements: readonly ExcalidrawElement[],
     appState: AppState,
     files: BinaryFiles
   ) => {
-    if (scene === undefined) {
+    if (initialData === undefined) {
       return;
     }
 
     const updatedScene: Scene = {
-      key: scene.key,
-      name: scene.name,
-      lastChange: Date.now(),
       elements,
       appState,
       files,
     };
 
     await setSceneIDB(updatedScene);
-
-    setScene?.(scene);
   };
 
-  useEffect(() => {
-    if (excalidrawAPI === null || scene === undefined) {
+  const excalidrawAPIRef = useRef(excalidrawAPI);
+  const setExcalidrawAPIRef = (api: ExcalidrawImperativeAPI) => {
+    excalidrawAPIRef.current = api;
+    _setExcalidrawAPI(api);
+  };
+
+  const reload = ($event: Event) => {
+    const { detail: scene } = $event as CustomEvent<Scene>;
+
+    if (excalidrawAPIRef.current === null || scene === undefined) {
       return;
     }
 
-    // TODO: reload only when needed
-
-    excalidrawAPI.updateScene({
+    excalidrawAPIRef.current.updateScene({
       elements: scene.elements,
     });
 
-    excalidrawAPI.addFiles(
+    excalidrawAPIRef.current.addFiles(
       Object.entries(scene.files ?? {}).map(([_, value]) => value)
     );
-  }, [scene]);
+  };
+
+  useEffect(() => {
+    window.addEventListener("reload", ($event: Event) => reload($event));
+
+    return () => {
+      window.removeEventListener("reload", ($event: Event) => reload($event));
+    };
+  }, []);
 
   return (
     <div className={styles.wrapper}>
-      <Excalidraw
-        ref={(api) => setExcalidrawAPI(api as ExcalidrawImperativeAPI)}
-        initialData={{
-          ...initialData,
-          scrollToContent: true,
-        }}
-        theme="dark"
-        onChange={onChange}
-        UIOptions={{
-          canvasActions: {
-            loadScene: false,
-            saveToActiveFile: false,
-          },
-        }}
-      />
+      {initialData !== undefined ? (
+        <Excalidraw
+          ref={(api) => setExcalidrawAPIRef(api as ExcalidrawImperativeAPI)}
+          initialData={{
+            ...initialData,
+            scrollToContent: true,
+          }}
+          theme="dark"
+          onChange={onChange}
+          UIOptions={{
+            canvasActions: {
+              loadScene: false,
+              saveToActiveFile: false,
+            },
+          }}
+        />
+      ) : undefined}
     </div>
   );
 };
 
-export const MemoizedDraw = memo(
-  Draw,
-  ({ initialData: { key: prevKey } }, { initialData: { key: nextKey } }) =>
-    prevKey === nextKey
-);
+export const MemoizedDraw = memo(Draw);

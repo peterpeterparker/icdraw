@@ -1,6 +1,6 @@
 import { BinaryFiles } from "@excalidraw/excalidraw/types/types";
 import { createStore, entries, get, getMany, setMany } from "idb-keyval";
-import { Scene } from "../types/app.ts";
+import { Metadata, Scene } from "../types/app.ts";
 
 const stateStore = createStore("icdraw-state", "state");
 const filesStore = createStore("icdraw-files", "files");
@@ -11,24 +11,23 @@ const KEY_LAST_CHANGE = "last-change";
 const KEY_APP_STATE = "app-state";
 const KEY_ELEMENTS = "elements";
 
-export type SetScene = Required<Pick<Scene, "lastChange">> &
-  Omit<Scene, "lastChange">;
-
-export const setScene = async ({ files, ...rest }: SetScene) =>
-  Promise.all([setState(rest), setFiles(files)]);
-
-const setState = ({
-  appState,
-  elements,
-  key,
-  lastChange,
-  name,
-}: Omit<SetScene, "files">) =>
+export const setMetadata = ({ key, name }: Metadata) =>
   setMany(
     [
+      [KEY_LAST_CHANGE, Date.now()],
       [KEY_SCENE, key],
       [KEY_NAME, name],
-      [KEY_LAST_CHANGE, lastChange],
+    ],
+    stateStore
+  );
+
+export const setScene = async ({ files, ...rest }: Scene) =>
+  Promise.all([setState(rest), setFiles(files)]);
+
+const setState = ({ appState, elements }: Omit<Scene, "files">) =>
+  setMany(
+    [
+      [KEY_LAST_CHANGE, Date.now()],
       [KEY_APP_STATE, appState],
       [KEY_ELEMENTS, elements],
     ],
@@ -42,10 +41,7 @@ const setFiles = (files: BinaryFiles | undefined) =>
 
 export const getScene = async (): Promise<Scene | undefined> => {
   const [state, files] = await Promise.all([
-    getMany(
-      [KEY_SCENE, KEY_NAME, KEY_LAST_CHANGE, KEY_APP_STATE, KEY_ELEMENTS],
-      stateStore
-    ),
+    getMany([KEY_APP_STATE, KEY_ELEMENTS], stateStore),
     entries(filesStore),
   ]);
 
@@ -53,7 +49,30 @@ export const getScene = async (): Promise<Scene | undefined> => {
     return undefined;
   }
 
-  const [key, name, lastChange, appState, elements] = state;
+  const [appState, elements] = state;
+
+  if (elements === undefined || appState === undefined) {
+    return undefined;
+  }
+
+  return {
+    appState,
+    elements,
+    files: files.reduce(
+      (acc, [key, value]) => ({ ...acc, [key as string]: value }),
+      {}
+    ),
+  };
+};
+
+export const getMetadata = async (): Promise<Metadata | undefined> => {
+  const state = await getMany([KEY_SCENE, KEY_NAME], stateStore);
+
+  if (state === undefined) {
+    return undefined;
+  }
+
+  const [key, name] = state;
 
   if (key === undefined) {
     return undefined;
@@ -62,13 +81,6 @@ export const getScene = async (): Promise<Scene | undefined> => {
   return {
     key,
     name,
-    lastChange,
-    appState,
-    elements,
-    files: files.reduce(
-      (acc, [key, value]) => ({ ...acc, [key as string]: value }),
-      {}
-    ),
   };
 };
 

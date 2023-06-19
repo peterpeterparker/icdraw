@@ -2,10 +2,11 @@ import { FolderOpenOutlined } from "@ant-design/icons";
 import { Doc, listDocs } from "@junobuild/core";
 import { Button, List, Modal, Radio, RadioChangeEvent, message } from "antd";
 import { useContext, useEffect, useState } from "react";
+import { loadAssets } from "../../services/assets.services.ts";
 import { JunoScene } from "../../types/juno.ts";
-import { SceneContext } from "../context/Scene.tsx";
+import { reloadScene } from "../../utils/scene.utils.ts";
+import { MetadataContext } from "../context/Metadata.tsx";
 import { WorkerContext } from "../context/Worker.tsx";
-import {loadAssets} from "../../services/assets.services.ts";
 
 export const Open = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -18,7 +19,7 @@ export const Open = () => {
     undefined
   );
 
-  const { setScene } = useContext(SceneContext);
+  const { setMetadata } = useContext(MetadataContext);
   const { busy } = useContext(WorkerContext);
 
   const showModal = () => setOpen(true);
@@ -58,10 +59,14 @@ export const Open = () => {
 
       const files = await loadAssets(key);
 
-      setScene?.({
+      setMetadata?.({
         key,
-        files,
+        name: data.name,
+      });
+
+      reloadScene({
         ...data,
+        files,
       });
 
       setOpen(false);

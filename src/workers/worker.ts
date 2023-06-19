@@ -12,7 +12,11 @@ import {
   uploadBlob,
 } from "@junobuild/core";
 import { nanoid } from "nanoid";
-import { getLastChange, getScene } from "../services/idb.services.ts";
+import {
+  getLastChange,
+  getMetadata,
+  getScene,
+} from "../services/idb.services.ts";
 import { ExcalidrawScene } from "../types/excalidraw.ts";
 import { JunoScene, JunoSceneKey } from "../types/juno.ts";
 import { PostMessage, PostMessageDataRequest } from "../types/post-message";
@@ -93,13 +97,18 @@ const sync = async (user: User | undefined | null) => {
   });
 
   try {
-    const scene = await getScene();
+    const [scene, metadata] = await Promise.all([getScene(), getMetadata()]);
 
     if (scene === undefined) {
       throw new Error("No scene found.");
     }
 
-    const { files, key, elements, ...rest } = scene;
+    if (metadata === undefined) {
+      throw new Error("No metadata found.");
+    }
+
+    const { files, elements, ...rest } = scene;
+    const { key, ...restMetadata } = metadata;
 
     const satellite = {
       identity: await unsafeIdentity(),
@@ -120,6 +129,8 @@ const sync = async (user: User | undefined | null) => {
         data: {
           elements,
           ...rest,
+          ...restMetadata,
+          lastChange,
         },
       },
       satellite,

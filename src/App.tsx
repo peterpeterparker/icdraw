@@ -1,8 +1,8 @@
 import { initJuno } from "@junobuild/core";
 import { useEffect, useState } from "react";
-import { Main } from "./components/Main.tsx";
+import { Scene } from "./components/Scene.tsx";
 import { Auth } from "./components/context/Auth.tsx";
-import { Scene } from "./components/context/Scene.tsx";
+import { Metadata } from "./components/context/Metadata.tsx";
 import { Worker } from "./components/context/Worker.tsx";
 
 const App = () => {
@@ -21,9 +21,9 @@ const App = () => {
   return (
     <Auth>
       <Worker>
-        <Scene>
-          <Main ready={ready} />
-        </Scene>
+        <Metadata>
+          <Scene ready={ready} />
+        </Metadata>
       </Worker>
     </Auth>
   );
