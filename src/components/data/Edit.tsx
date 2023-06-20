@@ -3,7 +3,7 @@ import { Button, Input, Modal, message } from "antd";
 import * as React from "react";
 import { useContext, useEffect, useState } from "react";
 import { MetadataContext } from "../context/Metadata.tsx";
-import {WorkerContext} from "../context/Worker.tsx";
+import { WorkerContext } from "../context/Worker.tsx";
 
 export const Edit = () => {
   const [messageApi, contextHolder] = message.useMessage();

@@ -6,5 +6,9 @@ import styles from "./Busy.module.scss";
 export const Busy = () => {
   const { busy } = useContext(WorkerContext);
 
-  return <div className={styles.busy}>{busy ? <SyncOutlined spin /> : undefined}</div>;
+  return (
+    <div className={styles.busy}>
+      {busy ? <SyncOutlined spin /> : undefined}
+    </div>
+  );
 };

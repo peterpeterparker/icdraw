@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { MetadataContext } from "./context/Metadata.tsx";
-import {MemoizedDraw} from "./draw/Draw.tsx";
+import { MemoizedDraw } from "./draw/Draw.tsx";
 import { Footer } from "./misc/Footer.tsx";
 import { Header } from "./misc/Header.tsx";
 import { Spinner } from "./misc/Spinner.tsx";

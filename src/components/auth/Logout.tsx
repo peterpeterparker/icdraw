@@ -1,8 +1,8 @@
 import { LogoutOutlined } from "@ant-design/icons";
 import { signOut } from "@junobuild/core";
 import { Button } from "antd";
-import {useContext} from "react";
-import {WorkerContext} from "../context/Worker.tsx";
+import { useContext } from "react";
+import { WorkerContext } from "../context/Worker.tsx";
 
 export const Logout = () => {
   const { busy } = useContext(WorkerContext);
@@ -15,7 +15,6 @@ export const Logout = () => {
       aria-label="Logout"
       disabled={busy}
       className="header"
-    >
-    </Button>
+    ></Button>
   );
 };
