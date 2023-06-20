@@ -14,6 +14,7 @@ export const Logout = () => {
       icon={<LogoutOutlined />}
       aria-label="Logout"
       disabled={busy}
+      className="header"
     >
     </Button>
   );

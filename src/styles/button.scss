@@ -26,4 +26,8 @@
   &:focus:not(:disabled):not(:active) {
     transform: scale(1.1);
   }
+
+  &:disabled {
+    background-color: white;
+  }
 }
