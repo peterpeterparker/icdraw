@@ -1,11 +1,25 @@
 .footer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  width: 100%;
+
+  padding: 0 var(--padding-2x);
+}
+
+.juno {
+  grid-column-start: 2;
+  align-self: center;
+
   display: flex;
   justify-content: center;
-  width: 100%;
+  align-items: center;
+
+  min-width: 200px;
 }
 
 .link {
-  display: inline-flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 
@@ -34,4 +48,11 @@
   &:focus:not(:disabled):not(:active) {
     transform: scale(1.05);
   }
+}
+
+.github {
+  display: flex;
+  justify-content: flex-end;
+
+  margin: var(--padding-0_5x) 0 0;
 }
