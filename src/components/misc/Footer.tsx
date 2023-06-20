@@ -1,4 +1,4 @@
-import { IconBuildWithJuno } from "../icons/IconBuildWithJuno.tsx";
+import { IconJuno } from "../icons/IconJuno.tsx";
 import styles from "./Footer.module.scss";
 
 export const Footer = () => {
@@ -11,7 +11,8 @@ export const Footer = () => {
         rel="noopener noreferrer"
         target="_blank"
       >
-        <IconBuildWithJuno />
+        <IconJuno />
+        Build with Juno
       </a>
     </footer>
   );

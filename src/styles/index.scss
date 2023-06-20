@@ -1,7 +1,11 @@
 html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+
+  --ui-font: Assistant, system-ui, BlinkMacSystemFont, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--ui-font);
 }
+
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
