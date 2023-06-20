@@ -26,4 +26,17 @@ div#root {
   overflow: hidden;
 
   padding: var(--padding-2x);
+
+  background: linear-gradient(
+    135deg,
+    var(--yellow) 20%,
+    var(--orange) 20%,
+    var(--orange) 40%,
+    var(--purple) 40%,
+    var(--purple) 60%,
+    var(--violet) 60%,
+    var(--violet) 80%,
+    var(--blue) 80%,
+    var(--blue)
+  );
 }

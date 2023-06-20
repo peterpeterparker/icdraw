@@ -51,6 +51,7 @@ export const Login = () => {
         onClick={signInII}
         shape="circle"
         aria-label="Sign-in with Internet Identity"
+        className="header"
       >
         <Icon component={IconII} />
       </Button>
@@ -59,6 +60,7 @@ export const Login = () => {
         onClick={signInNFID}
         shape="circle"
         aria-label="Sign-in with NFID"
+        className="header"
       >
         <Icon component={IconNFID} />
       </Button>

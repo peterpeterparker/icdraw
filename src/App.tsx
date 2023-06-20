@@ -1,4 +1,5 @@
 import { initJuno } from "@junobuild/core";
+import { ConfigProvider } from "antd";
 import { useEffect, useState } from "react";
 import { Scene } from "./components/Scene.tsx";
 import { Auth } from "./components/context/Auth.tsx";
@@ -19,13 +20,21 @@ const App = () => {
   }, []);
 
   return (
-    <Auth>
-      <Worker>
-        <Metadata>
-          <Scene ready={ready} />
-        </Metadata>
-      </Worker>
-    </Auth>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: "#000000",
+        },
+      }}
+    >
+      <Auth>
+        <Worker>
+          <Metadata>
+            <Scene ready={ready} />
+          </Metadata>
+        </Worker>
+      </Auth>
+    </ConfigProvider>
   );
 };
 

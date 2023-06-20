@@ -45,6 +45,7 @@ export const New = () => {
         icon={<FileAddOutlined />}
         aria-label="New"
         disabled={busy}
+        className="header"
       ></Button>
     </Popconfirm>
   );

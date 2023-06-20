@@ -73,6 +73,7 @@ export const Edit = () => {
         icon={<EditOutlined />}
         aria-label="Edit scene name"
         disabled={busy}
+        className="header"
       ></Button>
 
       <Modal

@@ -81,7 +81,7 @@ const Draw = () => {
             ...initialData,
             scrollToContent: true,
           }}
-          theme="dark"
+          theme="light"
           onChange={onChange}
           UIOptions={{
             canvasActions: {

@@ -1,0 +1,25 @@
+:root {
+  --padding-0_125x: calc(var(--padding) / 8);
+  --padding-0_25x: calc(var(--padding) / 4);
+  --padding-0_5x: calc(var(--padding) / 2);
+  --padding: 8px;
+  --padding-2x: calc(var(--padding) * 2);
+  --padding-4x: calc(var(--padding) * 4);
+
+  --border-radius: var(--padding-0_5x);
+
+  --z-index: 99;
+
+  --box-shadow: rgba(0, 20, 39, 0.4) 2px 2px, rgba(0, 20, 39, 0.3) 4px 4px,
+    rgba(0, 20, 39, 0.2) 6px 6px, rgba(0, 20, 39, 0.1) 8px 8px,
+    rgba(0, 20, 39, 0.05) 10px 10px;
+
+  --box-shadow-short: rgba(0, 20, 39, 0.4) 0 2px, rgba(0, 20, 39, 0.3) 0 3px,
+    rgba(0, 20, 39, 0.2) 0 5px;
+
+  --blue: #3a86ff;
+  --violet: #8338ec;
+  --purple: #ff006e;
+  --orange: #fb5607;
+  --yellow: #ffbe0b;
+}

@@ -2,8 +2,8 @@ export const IconNFID = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlSpace="preserve"
-    height={22}
-    width={22}
+    height={20}
+    width={20}
     style={{
       fillRule: "evenodd",
       clipRule: "evenodd",

@@ -100,6 +100,7 @@ export const Open = () => {
         icon={<FolderOpenOutlined />}
         aria-label="Open a scene"
         disabled={busy}
+        className="header"
       ></Button>
 
       <Modal

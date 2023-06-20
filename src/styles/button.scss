@@ -1,0 +1,29 @@
+.header {
+  outline: 0;
+  cursor: pointer;
+
+  user-select: none;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  background: white;
+  border: 1px solid black;
+  box-shadow: var(--box-shadow-short);
+
+  text-decoration: none;
+
+  transition: color 0.15s ease-out, background 0.15s ease-out, transform 0.15s ease-out,
+  box-shadow 0.25s ease-out, border 0.15s ease-out;
+
+  &:active {
+    box-shadow: none;
+    transform: translateY(3px);
+  }
+
+  &:hover:not(:disabled):not(:active),
+  &:focus:not(:disabled):not(:active) {
+    transform: scale(1.1);
+  }
+}
