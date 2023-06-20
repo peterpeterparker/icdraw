@@ -1,4 +1,4 @@
-import { Excalidraw } from "@excalidraw/excalidraw";
+import { Excalidraw, getSceneVersion } from "@excalidraw/excalidraw";
 import type { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
 import type { AppState, BinaryFiles } from "@excalidraw/excalidraw/types/types";
 import { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types/types";
@@ -16,6 +16,9 @@ const Draw = () => {
     useState<ExcalidrawImperativeAPI | null>(null);
 
   const [initialData, setInitialData] = useState<Scene | undefined>(undefined);
+  const [sceneVersion, setSceneVersion] = useState<number | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     (async () => {
@@ -32,6 +35,15 @@ const Draw = () => {
     if (initialData === undefined) {
       return;
     }
+
+    const v = getSceneVersion(elements);
+
+    if (v === sceneVersion) {
+      // Avoid infinite loops https://github.com/excalidraw/excalidraw/issues/3014
+      return;
+    }
+
+    setSceneVersion(v);
 
     const updatedScene: Scene = {
       elements,
