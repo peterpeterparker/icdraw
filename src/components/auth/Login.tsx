@@ -38,7 +38,7 @@ export const Login = () => {
     login(async () =>
       signIn({
         provider: new NFIDProvider({
-          appName: "David presentation",
+          appName: "icdraw",
           logoUrl:
             "https://y7m4b-fiaaa-aaaal-acgna-cai.raw.icp0.io/logo512.png",
         }),
