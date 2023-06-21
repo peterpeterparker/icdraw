@@ -17,4 +17,4 @@ This app, running entirely on the blockchain and served at [icdraw.com](icdraw.c
 
 ## Credits
 
-The component to virtual hand-drawn on a whiteboard is [Exclidraw](https://github.com/excalidraw/excalidraw).
+The component to virtual hand-drawn on a whiteboard is [Excalidraw](https://github.com/excalidraw/excalidraw).
