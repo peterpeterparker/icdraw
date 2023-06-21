@@ -9,12 +9,12 @@ export const Footer = () => {
           <a
               className={styles.link}
               href="https://juno.build"
-              aria-label="Build with Juno"
+              aria-label="Built with Juno"
               rel="noopener noreferrer"
               target="_blank"
           >
               <IconJuno />
-              Build with Juno
+              Built with Juno
           </a>
       </div>
 
