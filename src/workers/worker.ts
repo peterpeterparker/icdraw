@@ -59,7 +59,7 @@ const startTimer = async (user: User | undefined | null) => {
 
   const execute = async () => await sync(user);
 
-  // We sync the cycles now but also schedule the update after wards
+  // We starts now but also schedule the update after wards
   await execute();
 
   timer = setInterval(execute, 1000);
