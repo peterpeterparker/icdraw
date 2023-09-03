@@ -34,8 +34,12 @@
 
   padding: var(--padding-0_5x) var(--padding-2x);
 
-  transition: color 0.15s ease-out, background 0.15s ease-out,
-    transform 0.15s ease-out, box-shadow 0.25s ease-out, border 0.15s ease-out;
+  transition:
+    color 0.15s ease-out,
+    background 0.15s ease-out,
+    transform 0.15s ease-out,
+    box-shadow 0.25s ease-out,
+    border 0.15s ease-out;
 
   border-radius: var(--border-radius);
 

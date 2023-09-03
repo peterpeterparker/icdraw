@@ -18,7 +18,7 @@ export const setMetadata = ({ key, name }: Metadata) =>
       [KEY_SCENE, key],
       [KEY_NAME, name],
     ],
-    stateStore
+    stateStore,
   );
 
 export const setScene = async ({ files, ...rest }: Scene) =>
@@ -31,7 +31,7 @@ const setState = ({ appState, elements }: Omit<Scene, "files">) =>
       [KEY_APP_STATE, appState],
       [KEY_ELEMENTS, elements],
     ],
-    stateStore
+    stateStore,
   );
 
 const setFiles = (files: BinaryFiles | undefined) =>
@@ -60,7 +60,7 @@ export const getScene = async (): Promise<Scene | undefined> => {
     elements,
     files: files.reduce(
       (acc, [key, value]) => ({ ...acc, [key as string]: value }),
-      {}
+      {},
     ),
   };
 };

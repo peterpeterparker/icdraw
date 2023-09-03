@@ -16,7 +16,7 @@ export const Open = () => {
 
   const [items, setItems] = useState<Doc<JunoScene>[]>([]);
   const [selected, setSelected] = useState<Doc<JunoScene> | undefined>(
-    undefined
+    undefined,
   );
 
   const { setMetadata } = useContext(MetadataContext);

@@ -17,7 +17,7 @@ const Draw = () => {
 
   const [initialData, setInitialData] = useState<Scene | undefined>(undefined);
   const [sceneVersion, setSceneVersion] = useState<number | undefined>(
-    undefined
+    undefined,
   );
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const Draw = () => {
   const onChange = async (
     elements: readonly ExcalidrawElement[],
     appState: AppState,
-    files: BinaryFiles
+    files: BinaryFiles,
   ) => {
     if (initialData === undefined) {
       return;
@@ -72,7 +72,7 @@ const Draw = () => {
     });
 
     excalidrawAPIRef.current.addFiles(
-      Object.entries(scene.files ?? {}).map(([_, value]) => value)
+      Object.entries(scene.files ?? {}).map(([_, value]) => value),
     );
   };
 

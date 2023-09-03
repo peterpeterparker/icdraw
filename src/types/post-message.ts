@@ -9,7 +9,7 @@ export type PostMessageRequest = "start" | "stop" | "busy" | "idle";
 export type PostMessageResponse = object;
 
 export interface PostMessage<
-  T extends PostMessageDataRequest | PostMessageDataResponse
+  T extends PostMessageDataRequest | PostMessageDataResponse,
 > {
   msg: PostMessageRequest | PostMessageResponse;
   data?: T;

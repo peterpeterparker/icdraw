@@ -31,7 +31,7 @@ export const Login = () => {
         provider: new InternetIdentityProvider({
           domain: "ic0.app",
         }),
-      })
+      }),
     );
 
   const signInNFID = async () =>
@@ -42,7 +42,7 @@ export const Login = () => {
           logoUrl:
             "https://y7m4b-fiaaa-aaaal-acgna-cai.raw.icp0.io/logo512.png",
         }),
-      })
+      }),
     );
 
   return (

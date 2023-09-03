@@ -190,14 +190,14 @@ const uploadFiles = async ({
         (element) =>
           element.type === "image" &&
           (element as ExcalidrawImageElement).fileId === key &&
-          element.isDeleted
+          element.isDeleted,
       ) !== undefined;
     const reactivated =
       elements?.find(
         (element) =>
           element.type === "image" &&
           (element as ExcalidrawImageElement).fileId === key &&
-          !element.isDeleted
+          !element.isDeleted,
       ) !== undefined;
 
     const asset = assets.find(({ name }) => key === name);
@@ -217,7 +217,7 @@ const uploadFiles = async ({
         collection: "files",
         fullPath: storageFile.fullPath,
         satellite,
-      })
+      }),
     ),
     ...uploadFiles.map(async ({ key, file }) =>
       uploadBlob({
@@ -232,7 +232,7 @@ const uploadFiles = async ({
         token: nanoid(),
         description: sceneKey,
         satellite,
-      })
+      }),
     ),
   ]);
 };

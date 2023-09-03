@@ -23,7 +23,7 @@ export const Metadata = ({ children }: { children?: ReactNode }) => {
     (async () => {
       const existingMetada = await getMetadata();
       setMetadata(
-        existingMetada !== undefined ? existingMetada : newMetadata()
+        existingMetada !== undefined ? existingMetada : newMetadata(),
       );
     })();
   }, []);

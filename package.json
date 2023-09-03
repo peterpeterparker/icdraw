@@ -8,10 +8,12 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "format": "prettier --plugin-search-dir . --write ."
+    "format": "prettier --plugin-search-dir . --write .",
+    "postinstall": "node -e \"require('fs').cpSync('node_modules/@junobuild/analytics/dist/workers/', './public/workers', {recursive: true});\""
   },
   "dependencies": {
     "@excalidraw/excalidraw": "^0.15.3",
+    "@junobuild/analytics": "^0.0.4",
     "@junobuild/core": "^0.0.26",
     "antd": "^5.8.6",
     "idb-keyval": "^6.2.1",

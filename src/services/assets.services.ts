@@ -24,7 +24,7 @@ export const loadAssets = async (key: JunoSceneKey): Promise<BinaryFiles> => {
   const files = await Promise.all(
     assets.map(async ({ downloadUrl, headers, name }) => {
       const response = await fetch(
-        downloadUrl.replace(".icp0.io", ".raw.icp0.io")
+        downloadUrl.replace(".icp0.io", ".raw.icp0.io"),
       );
       const blob = await response.blob();
       const reader = new FileReader();
@@ -44,14 +44,14 @@ export const loadAssets = async (key: JunoSceneKey): Promise<BinaryFiles> => {
         created: now,
         lastRetrieved: now,
         mimeType: (headers.find(
-          ([header, _]) => header === "Content-Type'"
+          ([header, _]) => header === "Content-Type'",
         )?.[1] ?? "image/jpeg") as
           | (typeof ALLOWED_IMAGE_MIME_TYPES)[number]
           | typeof MIME_TYPES.binary,
       };
 
       return bnData;
-    })
+    }),
   );
 
   return files.reduce(
@@ -59,6 +59,6 @@ export const loadAssets = async (key: JunoSceneKey): Promise<BinaryFiles> => {
       ...acc,
       [value.id]: value,
     }),
-    {}
+    {},
   );
 };
