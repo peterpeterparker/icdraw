@@ -215,7 +215,7 @@ const uploadFiles = async ({
     ...deleteFiles.map((storageFile) =>
       deleteAsset({
         collection: "files",
-        storageFile,
+        fullPath: storageFile.fullPath,
         satellite,
       })
     ),
