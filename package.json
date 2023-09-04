@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@excalidraw/excalidraw": "^0.15.3",
-    "@junobuild/analytics": "^0.0.4",
+    "@junobuild/analytics": "^0.0.5",
     "@junobuild/core": "^0.0.26",
     "antd": "^5.8.6",
     "idb-keyval": "^6.2.1",
