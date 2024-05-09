@@ -13,7 +13,7 @@
 
 ## icdraw.com
 
-This app, running entirely on the blockchain and served at [icdraw.com](icdraw.com), s a quick and minimal showcase of what you can effortlessly build with [Juno](https://juno.build).
+This app is running entirely on the blockchain and served at [icdraw.com](icdraw.com). It's a quick and minimal showcase of what you can effortlessly build with [Juno](https://juno.build).
 
 ## Credits
 
