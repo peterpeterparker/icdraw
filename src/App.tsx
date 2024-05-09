@@ -13,7 +13,7 @@ const App = () => {
     (async () => {
       await initJuno({
         satelliteId: "fqotu-wqaaa-aaaal-acp3a-cai",
-      })
+      });
 
       setReady(true);
     })();
