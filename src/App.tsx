@@ -12,7 +12,7 @@ const App = () => {
   useEffect(() => {
     (async () => {
       await initJuno({
-        satelliteId: "fqotu-wqaaa-aaaal-acp3a-cai",
+        satelliteId: import.meta.env.VITE_SATELLITE_ID,
       });
 
       setReady(true);
