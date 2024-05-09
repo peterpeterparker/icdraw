@@ -13,6 +13,20 @@ import { IconNFID } from "../icons/IconNFID.tsx";
 export const Login = () => {
   const { setBusy } = useContext(AuthContext);
 
+  const isAlternativeOrigin = (): boolean => {
+    const {
+      location: { origin },
+    } = window;
+
+    return ["https://www.icdraw.com"].includes(origin);
+  };
+
+  const derivationOrigin = {
+    ...(isAlternativeOrigin() && {
+      derivationOrigin: "https://icdraw.com",
+    }),
+  };
+
   const login = async (signIn: () => Promise<void>) => {
     setBusy?.(true);
 
@@ -31,6 +45,7 @@ export const Login = () => {
         provider: new InternetIdentityProvider({
           domain: "ic0.app",
         }),
+        ...derivationOrigin,
       }),
     );
 
@@ -42,6 +57,7 @@ export const Login = () => {
           logoUrl:
             "https://y7m4b-fiaaa-aaaal-acgna-cai.raw.icp0.io/logo512.png",
         }),
+        ...derivationOrigin,
       }),
     );
 
