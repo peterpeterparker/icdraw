@@ -11,9 +11,7 @@ const App = () => {
 
   useEffect(() => {
     (async () => {
-      await initJuno({
-        satelliteId: import.meta.env.VITE_SATELLITE_ID,
-      });
+      await initJuno();
 
       setReady(true);
     })();
