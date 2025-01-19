@@ -1,10 +1,6 @@
-import {
-  ALLOWED_IMAGE_MIME_TYPES,
-  MIME_TYPES,
-} from "@excalidraw/excalidraw/types/constants";
 import { FileId } from "@excalidraw/excalidraw/types/element/types";
 import {
-  BinaryFileData,
+  type BinaryFileData,
   BinaryFiles,
   DataURL,
 } from "@excalidraw/excalidraw/types/types";
@@ -45,9 +41,7 @@ export const loadAssets = async (key: JunoSceneKey): Promise<BinaryFiles> => {
         lastRetrieved: now,
         mimeType: (headers.find(
           ([header, _]) => header === "Content-Type'",
-        )?.[1] ?? "image/jpeg") as
-          | (typeof ALLOWED_IMAGE_MIME_TYPES)[number]
-          | typeof MIME_TYPES.binary,
+        )?.[1] ?? "image/jpeg") as BinaryFileData["mimeType"],
       };
 
       return bnData;
