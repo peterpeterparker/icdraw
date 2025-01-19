@@ -88,7 +88,9 @@ const Draw = () => {
     <div className={styles.wrapper}>
       {initialData !== undefined ? (
         <Excalidraw
-          ref={(api) => setExcalidrawAPIRef(api as ExcalidrawImperativeAPI)}
+          excalidrawAPI={(api) =>
+            setExcalidrawAPIRef(api as ExcalidrawImperativeAPI)
+          }
           initialData={{
             ...initialData,
             scrollToContent: true,
