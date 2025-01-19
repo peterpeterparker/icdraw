@@ -110,8 +110,6 @@ const sync = async (user: User | undefined | null) => {
     const { files, elements, ...rest } = scene;
     const { key, ...restMetadata } = metadata;
 
-    console.log(import.meta.env);
-
     const CONTAINER = import.meta.env.VITE_CONTAINER;
     const SATELLITE_ID = import.meta.env.VITE_SATELLITE_ID;
 
