@@ -8,5 +8,6 @@ export default defineConfig({
     storage: {
       iframe: "allow-any",
     },
+    predeploy: ["npm run build"],
   },
 });
