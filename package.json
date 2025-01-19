@@ -13,7 +13,6 @@
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
     "@excalidraw/excalidraw": "^0.15.3",
-    "@junobuild/core": "^0.0.50",
     "antd": "^5.17.0",
     "idb-keyval": "^6.2.1",
     "nanoid": "^5.0.7",
@@ -21,8 +20,9 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@junobuild/config": "^0.0.7",
-    "@junobuild/vite-plugin": "^0.0.13",
+    "@junobuild/config": "^0.0.17",
+    "@junobuild/core": "^0.1.0",
+    "@junobuild/vite-plugin": "^0.0.19",
     "@types/node": "^20.12.11",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
@@ -36,6 +36,7 @@
     "prettier-plugin-organize-imports": "^3.2.4",
     "sass": "^1.77.0",
     "typescript": "^5.4.5",
-    "vite": "^5.2.11"
+    "vite": "^5.2.11",
+    "vite-plugin-node-polyfills": "^0.23.0"
   }
 }

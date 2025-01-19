@@ -2,7 +2,6 @@ import { ExcalidrawImageElement } from "@excalidraw/excalidraw/types/element/typ
 import { BinaryFileData } from "@excalidraw/excalidraw/types/types";
 import {
   Asset,
-  Satellite,
   User,
   deleteAsset,
   getDoc,
@@ -20,6 +19,7 @@ import {
 import { ExcalidrawScene } from "../types/excalidraw.ts";
 import { JunoScene, JunoSceneKey } from "../types/juno.ts";
 import { PostMessage, PostMessageDataRequest } from "../types/post-message";
+import type { SatelliteOptions } from "@junobuild/core";
 
 onmessage = async ({
   data: { msg, data },
@@ -110,9 +110,17 @@ const sync = async (user: User | undefined | null) => {
     const { files, elements, ...rest } = scene;
     const { key, ...restMetadata } = metadata;
 
-    const satellite = {
+    console.log(import.meta.env);
+
+    const CONTAINER = import.meta.env.VITE_CONTAINER;
+    const SATELLITE_ID = import.meta.env.VITE_SATELLITE_ID;
+
+    const satellite: SatelliteOptions = {
       identity: await unsafeIdentity(),
-      satelliteId: "fqotu-wqaaa-aaaal-acp3a-cai",
+      satelliteId: SATELLITE_ID,
+      ...(CONTAINER !== undefined && {
+        container: true,
+      }),
     };
 
     const doc = await getDoc<JunoScene>({
@@ -165,7 +173,7 @@ const uploadFiles = async ({
   satellite,
   key: sceneKey,
 }: {
-  satellite: Satellite;
+  satellite: SatelliteOptions;
 } & Pick<ExcalidrawScene, "elements" | "files"> & { key: JunoSceneKey }) => {
   if (!files) {
     return;
